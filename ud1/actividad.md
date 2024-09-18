@@ -1,8 +1,5 @@
 # Actividad: Desarrollo de Software a través de distintas Etapas
 
-## Modalidad de Trabajo: 
-En parejas
-
 ## Entrega: 
 Documento PDF a través de Moodle. 
 ```
