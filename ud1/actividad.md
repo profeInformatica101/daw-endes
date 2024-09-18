@@ -3,7 +3,7 @@
 ## Modalidad de Trabajo: 
 En parejas
 
-## Metodología de Entrega: 
+## Entrega: 
 Documento PDF a través de Moodle. 
 ```
 Aunque utilizarán Google Docs para la colaboración y desarrollo de la actividad
