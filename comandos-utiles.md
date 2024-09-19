@@ -82,28 +82,21 @@ kill -9 1234
 ```
 
 ---
+# Comandos en Windows
 
-## Comandos en Windows
+## 1. Ver Puertos Abiertos
 
-### 1. Ver Puertos Abiertos
-
-Para ver los puertos abiertos en Windows, puedes usar el siguiente comando en CMD:
+Para ver los puertos abiertos en Windows, puedes usar el siguiente comando en **CMD** o **PowerShell**:
 
 ```bash
 netstat -aon
 ```
 
-Este comando lista todas las conexiones activas y los puertos en escucha en el sistema.
+Este comando lista todas las conexiones activas y los puertos en escucha en el sistema. Los resultados mostrarán la dirección IP local, el puerto, la dirección IP remota, el estado de la conexión y el **PID** (identificador del proceso) correspondiente.
 
-Si deseas hacer un escaneo de puertos con más detalle, puedes usar `nmap`, al igual que en Linux:
+## 2. Detectar Qué Proceso Usa un Puerto
 
-```bash
-nmap localhost
-```
-
-### 2. Detectar Qué Proceso Usa un Puerto
-
-Para detectar qué proceso está utilizando un puerto específico en Windows, usa el siguiente comando:
+Si quieres detectar qué proceso está utilizando un puerto específico, puedes usar el siguiente comando:
 
 ```bash
 netstat -aon | findstr :<puerto>
@@ -115,35 +108,43 @@ netstat -aon | findstr :<puerto>
 netstat -aon | findstr :80
 ```
 
-### 3. Identificar el PID del Proceso
+Esto te dará el **PID** del proceso que está usando ese puerto.
 
-Una vez que tengas el PID del proceso que está utilizando el puerto, puedes usar este comando para obtener más detalles:
+## 3. Identificar el PID del Proceso
+
+Una vez que obtienes el **PID** del proceso que está utilizando el puerto, puedes usar este comando para obtener más detalles sobre ese proceso:
 
 ```bash
 tasklist | findstr <PID>
 ```
 
-**Ejemplo**: Si el PID es `1234`, usa:
+**Ejemplo**: Si el **PID** es `1234`, usa:
 
 ```bash
 tasklist | findstr 1234
 ```
 
-### 4. Matar un Proceso
+Esto te proporcionará el nombre del proceso que corresponde a ese **PID**.
 
-Para matar un proceso en Windows, usa el comando `taskkill` seguido del PID:
+## 4. Matar un Proceso
+
+Para finalizar (matar) un proceso en Windows usando el **PID**:
 
 ```bash
 taskkill /PID <PID> /F
 ```
 
-**Ejemplo**: Si el PID es `1234`, usa:
+**Ejemplo**: Si el **PID** es `1234`, usa:
 
 ```bash
 taskkill /PID 1234 /F
 ```
 
+El parámetro `/F` fuerza la terminación del proceso.
+
 ---
+
+Estos comandos son útiles para diagnosticar y gestionar puertos y procesos en un entorno Windows.
 
 ## Comandos Adicionales
 
@@ -186,12 +187,6 @@ taskkill /PID 1234 /F
    - Muestra las conexiones TCP activas en el sistema.
    ```powershell
    Get-NetTCPConnection
-   ```
-
-3. **`PortQry`**:
-   - Herramienta de diagnóstico para analizar puertos en Windows.
-   ```bash
-   portqry.exe -n <dirección IP> -p tcp -e <puerto>
    ```
 
 ---
