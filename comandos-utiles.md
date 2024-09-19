@@ -5,21 +5,46 @@ Este documento proporciona comandos útiles para identificar qué procesos está
 
 ## Índice
 1. [Comandos en Linux](#comandos-en-linux)
-    - Detectar puertos abiertos
+    - Ver puertos abiertos
+    - Detectar qué proceso usa un puerto
     - Identificar el PID de un proceso
     - Matar un proceso
 2. [Comandos en Windows](#comandos-en-windows)
-    - Detectar puertos abiertos
+    - Ver puertos abiertos
+    - Detectar qué proceso usa un puerto
     - Identificar el PID de un proceso
     - Matar un proceso
+3. [Comandos Adicionales](#comandos-adicionales)
+    - Comandos avanzados en Linux
+    - Comandos avanzados en Windows
 
 ---
 
 ## Comandos en Linux
 
-### 1. Detectar Puertos Abiertos
+### 1. Ver Puertos Abiertos
 
-Para listar los puertos abiertos en tu sistema Linux y ver qué proceso los está utilizando, puedes usar el comando `lsof` de la siguiente manera:
+Para listar todos los puertos abiertos en Linux, puedes usar el comando `netstat` o `ss`. Un ejemplo de cómo hacerlo es:
+
+```bash
+netstat -tuln
+```
+
+Este comando mostrará todos los puertos TCP y UDP abiertos en el sistema. Si prefieres usar `ss`, que es más moderno y eficiente, puedes usar:
+
+```bash
+ss -tuln
+```
+
+Si deseas hacer un escaneo completo de puertos, puedes usar la herramienta `nmap`:
+
+```bash
+nmap localhost
+```
+
+### 2. Detectar qué Proceso Usa un Puerto
+
+Para ver qué proceso está utilizando un puerto específico, usa el siguiente comando `lsof`:
 
 ```bash
 lsof -i :<puerto>
@@ -31,7 +56,7 @@ lsof -i :<puerto>
 lsof -i :80
 ```
 
-### 2. Identificar el PID del Proceso
+### 3. Identificar el PID del Proceso
 
 En la salida del comando `lsof`, verás una columna que indica el PID (Process ID) del proceso que está utilizando el puerto especificado. Por ejemplo:
 
@@ -42,7 +67,7 @@ nginx     1234  root   6u   IPv4 123456 0t0      TCP *:http (LISTEN)
 
 El PID del proceso que está utilizando el puerto 80 es `1234`.
 
-### 3. Matar un Proceso
+### 4. Matar un Proceso
 
 Para matar un proceso en Linux, usa el comando `kill` seguido del PID:
 
@@ -60,9 +85,25 @@ kill -9 1234
 
 ## Comandos en Windows
 
-### 1. Detectar Puertos Abiertos
+### 1. Ver Puertos Abiertos
 
-Para detectar los puertos abiertos en Windows y ver qué procesos los están utilizando, usa el siguiente comando en el *Command Prompt* (CMD) con permisos de administrador:
+Para ver los puertos abiertos en Windows, puedes usar el siguiente comando en CMD:
+
+```bash
+netstat -aon
+```
+
+Este comando lista todas las conexiones activas y los puertos en escucha en el sistema.
+
+Si deseas hacer un escaneo de puertos con más detalle, puedes usar `nmap`, al igual que en Linux:
+
+```bash
+nmap localhost
+```
+
+### 2. Detectar Qué Proceso Usa un Puerto
+
+Para detectar qué proceso está utilizando un puerto específico en Windows, usa el siguiente comando:
 
 ```bash
 netstat -aon | findstr :<puerto>
@@ -74,31 +115,21 @@ netstat -aon | findstr :<puerto>
 netstat -aon | findstr :80
 ```
 
-Esto te mostrará una salida similar a la siguiente:
+### 3. Identificar el PID del Proceso
 
-```
-  TCP    0.0.0.0:80           0.0.0.0:0              LISTENING       1234
-```
-
-El número al final (`1234`) es el PID del proceso que está utilizando el puerto 80.
-
-### 2. Identificar el PID del Proceso
-
-Una vez que tengas el PID, puedes usar el siguiente comando para obtener más detalles sobre el proceso:
+Una vez que tengas el PID del proceso que está utilizando el puerto, puedes usar este comando para obtener más detalles:
 
 ```bash
 tasklist | findstr <PID>
 ```
 
-**Ejemplo**: Si el PID es `1234`, el comando sería:
+**Ejemplo**: Si el PID es `1234`, usa:
 
 ```bash
 tasklist | findstr 1234
 ```
 
-Esto te mostrará el nombre del proceso que está utilizando ese PID.
-
-### 3. Matar un Proceso
+### 4. Matar un Proceso
 
 Para matar un proceso en Windows, usa el comando `taskkill` seguido del PID:
 
@@ -106,12 +137,61 @@ Para matar un proceso en Windows, usa el comando `taskkill` seguido del PID:
 taskkill /PID <PID> /F
 ```
 
-**Ejemplo**: Si el PID es `1234`, el comando sería:
+**Ejemplo**: Si el PID es `1234`, usa:
 
 ```bash
 taskkill /PID 1234 /F
 ```
 
-El parámetro `/F` fuerza la finalización del proceso.
+---
+
+## Comandos Adicionales
+
+### Comandos Avanzados en Linux
+
+1. **`ss`** (socket statistics):
+   - Alternativa moderna a `netstat` para inspeccionar conexiones de red.
+   ```bash
+   ss -tuln
+   ```
+
+2. **`fuser`**:
+   - Muestra qué procesos están usando un puerto específico.
+   ```bash
+   fuser -n tcp <puerto>
+   ```
+
+3. **`tcpdump`**:
+   - Captura tráfico de red en tiempo real.
+   ```bash
+   sudo tcpdump -i any port 80
+   ```
+
+4. **`ufw`**:
+   - Comando para gestionar reglas de firewall y abrir o cerrar puertos.
+   ```bash
+   sudo ufw allow <puerto>/tcp
+   sudo ufw deny <puerto>/tcp
+   ```
+
+### Comandos Avanzados en Windows
+
+1. **`Get-Process`** (PowerShell):
+   - Lista todos los procesos en ejecución.
+   ```powershell
+   Get-Process
+   ```
+
+2. **`Get-NetTCPConnection`** (PowerShell):
+   - Muestra las conexiones TCP activas en el sistema.
+   ```powershell
+   Get-NetTCPConnection
+   ```
+
+3. **`PortQry`**:
+   - Herramienta de diagnóstico para analizar puertos en Windows.
+   ```bash
+   portqry.exe -n <dirección IP> -p tcp -e <puerto>
+   ```
 
 ---
